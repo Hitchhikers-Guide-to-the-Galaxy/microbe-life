@@ -33,6 +33,24 @@ crescents, colonies. `life.colonies()` finds colonies by union-find and
 measures their elongation (chains) and layering (membranes);
 `toCytoscape()` (`src/cyjs.js`) exports a creature as cytoscape graph data.
 
+A page background is one script tag (`dist/microbe-bg.min.js`, 11.9 KB,
+5.2 KB gzipped):
+
+```html
+<script defer src="microbe-bg.min.js" data-genome="amoeba"></script>
+```
+
+It draws on a transparent fixed canvas behind the page, takes no clicks, runs
+at 30 fps at most, halves its particles when frames run over 8 ms, stops while
+the tab is hidden and shows one still frame to readers who ask for reduced
+motion. `data-count`, `data-opacity`, `data-fps` and `data-scale` tune it;
+`window.microbeBackground` has `show()`, `level()`, `pause()` and `resume()`.
+On the night.earth Sound Site it gives each page its own creature, crossfades
+with the scene and breathes with the music.
+
+Classic mode (`src/classic.js`) and colonies/stats (`src/colonies.js`) add
+themselves to Life when imported, so the background carries neither.
+
 Cost follows density, not count. Keep the world growing with the particle
 count (`worldSize`) and 1,000 particles step in well under 2 ms.
 

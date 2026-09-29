@@ -15,7 +15,7 @@
 import { Life } from './core.js'
 import { makeRng, seedNumber } from './rng.js'
 
-export const WORDS = (
+export const WORDS = /* @__PURE__ */ (
   'moss ember soil lantern spore tide amber fern silt root drift lichen hypha dew loam pollen ' +
   'humus nectar peat reed kelp mycel algae bloom bud burrow chalk clay cress dune dusk ' +
   'echo eddy elder flint frond gall garnet glade gleam grain grove gust hazel heath hive ' +

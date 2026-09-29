@@ -2,6 +2,8 @@
 // ms is wall time; cpuMs is this process's CPU time, steadier on a busy machine.
 // node bench/bench.js [--json]
 import { Life } from '../src/core.js'
+import '../src/colonies.js'
+import '../src/classic.js'
 
 const cases = [
   { mode: 'classic', n: 1000 }, { mode: 'cell', n: 400 }, { mode: 'cell', n: 1000 },

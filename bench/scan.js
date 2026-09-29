@@ -10,6 +10,7 @@
 //   alive     mean squared speed at the end (0 = frozen)
 //   colonies  count at the end, and share of particles inside one
 import { Life, worldSize } from '../src/core.js'
+import '../src/colonies.js'
 import { wordSeed } from '../src/genome.js'
 import { makeRng } from '../src/rng.js'
 

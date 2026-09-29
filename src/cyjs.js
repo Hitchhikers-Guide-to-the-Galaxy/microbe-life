@@ -8,6 +8,7 @@
 //   member edges   colony → kind, weight = share of the colony's members
 
 import { PALETTE } from './draw2d.js'
+import './colonies.js'
 
 export function toCytoscape(life, { colonies = life.colonies(), minRule = 0.05, name } = {}) {
   const k = life.k

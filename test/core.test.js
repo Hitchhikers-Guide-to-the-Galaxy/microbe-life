@@ -1,6 +1,8 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { Life, pairIndex, worldSize } from '../src/core.js'
+import '../src/colonies.js'
+import '../src/classic.js'
 import { makeRng, hash32, seedNumber } from '../src/rng.js'
 import { hunarWorld } from './reference/hunar.js'
 

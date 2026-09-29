@@ -4,6 +4,8 @@
 // wiki frame puts its own data in the hash; no storage is used, since a
 // sandboxed frame has none.
 import { Life, worldSize } from '../src/core.js'
+import '../src/colonies.js'
+import '../src/classic.js'
 import { Painter } from '../src/draw2d.js'
 import { encode, decode, lifeFromGenome, genomeOf, wordSeed } from '../src/genome.js'
 import { GENOMES } from '../src/genomes.js'

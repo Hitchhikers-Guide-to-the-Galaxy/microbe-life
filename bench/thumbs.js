@@ -5,6 +5,7 @@
 import { spawn } from 'node:child_process'
 import { mkdir } from 'node:fs/promises'
 import { worldSize } from '../src/core.js'
+import '../src/colonies.js'
 import { lifeFromGenome } from '../src/genome.js'
 import { GENOMES } from '../src/genomes.js'
 import { PALETTE } from '../src/draw2d.js'

@@ -3,3 +3,5 @@ node_modules/
 dist/candidates/
 dist/thumbs/
 dist/cyjs/
+dist/bg-*.html
+!dist/bg-test.html

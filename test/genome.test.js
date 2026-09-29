@@ -1,6 +1,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { Life } from '../src/core.js'
+import '../src/colonies.js'
 import { encode, decode, lifeFromGenome, genomeOf, wordSeed, WORDS } from '../src/genome.js'
 import { toCytoscape } from '../src/cyjs.js'
 import { makeRng } from '../src/rng.js'

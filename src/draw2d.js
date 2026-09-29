@@ -15,7 +15,9 @@ export class Painter {
     this.canvas = canvas
     this.ctx = canvas.getContext('2d')
     this.palette = options.palette || PALETTE
-    this.background = options.background || '#06080b'
+    // null = a transparent canvas whose trails fade by erasing (for a page
+    // background, over whatever the page already paints)
+    this.background = options.background === undefined ? '#06080b' : options.background
     this.trail = options.trail ?? 0.22     // 1 = no trails
     this.size = options.size ?? 2.4        // dot radius in CSS pixels
     this.blend = options.blend || 'cell'
@@ -41,17 +43,22 @@ export class Painter {
   clear() {
     this.ctx.globalCompositeOperation = 'source-over'
     this.ctx.globalAlpha = 1
+    if (this.background === null) { this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); return }
     this.ctx.fillStyle = this.background
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
   }
 
-  draw(life) {
+  draw(life, alpha = 1) {
     const { ctx, canvas } = this
+    if (alpha >= 1 || this._fadedAt !== life) {
+      // fade the last frame once per frame, not once per world drawn
+      ctx.globalCompositeOperation = this.background === null ? 'destination-out' : 'source-over'
+      ctx.globalAlpha = this.trail
+      ctx.fillStyle = this.background || '#000'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+    }
     ctx.globalCompositeOperation = 'source-over'
-    ctx.globalAlpha = this.trail
-    ctx.fillStyle = this.background
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
-    ctx.globalAlpha = 1
+    ctx.globalAlpha = alpha
     const sx = canvas.width / life.width, sy = canvas.height / life.height
     const { x, y, kind, n } = life
     const np = this.dots.length
@@ -66,6 +73,15 @@ export class Painter {
       ctx.drawImage(s, x[i] * sx - s.half, y[i] * sy - s.half)
     }
     ctx.globalCompositeOperation = 'source-over'
+    ctx.globalAlpha = 1
+  }
+
+  // Two worlds in one frame, for a crossfade: fade once, draw both.
+  drawPair(from, to, t) {
+    this.draw(to, t)
+    this._fadedAt = from
+    this.draw(from, 1 - t)
+    this._fadedAt = null
   }
 }
 
