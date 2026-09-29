@@ -19,6 +19,7 @@
   canvas { flex: 1; width: 100%; min-height: 240px; display: block; }
   footer { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: flex-start; padding: 6px 12px 10px; border-top: 1px solid var(--line); color: var(--dim); }
   #readout { flex: 1 1 18em; }
+  a { color: var(--accent); word-break: break-all; }
   table { border-collapse: collapse; font-variant-numeric: tabular-nums; }
   th, td { padding: 1px 8px; text-align: right; border-bottom: 1px solid var(--line); }
   th:first-child, td:first-child { text-align: left; }
@@ -26,6 +27,7 @@
 </head>
 <body>
 <header>
+  <div class="group"><label for="genome">genome</label><select id="genome"><option value="">custom</option></select></div>
   <div class="group" role="group" aria-label="Force mode">
     <button data-mode="classic" aria-pressed="false" title="Hunar Ahmad's rule, bounced off the walls">classic</button>
     <button data-mode="cell" aria-pressed="true" title="Near-field push and smooth pull, on a torus">cell</button>
@@ -35,11 +37,13 @@
     <select id="kinds"><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select></div>
   <div class="group"><label for="n">particles</label>
     <select id="n"><option>400</option><option>1000</option><option>2000</option></select></div>
+  <button id="blend" title="Draw as cells or as additive glow">cells</button>
   <button id="bench">benchmark</button>
 </header>
 <canvas id="world" aria-label="Particle life simulation"></canvas>
 <footer>
   <div id="readout">starting…</div>
+  <div>share <a id="share" target="_blank" rel="noopener"></a></div>
   <table id="results"></table>
 </footer>
 <script type="module">/*DEMO*/</script>
