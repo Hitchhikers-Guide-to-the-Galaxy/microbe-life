@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Microbe Life</title>
+<style>
+  :root { --bg: #06080b; --fg: #cfd8cf; --dim: #7d887f; --line: #1f2a22; --accent: #7fd88f; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg); font: 13px/1.4 ui-sans-serif, system-ui, sans-serif; }
+  body { display: flex; flex-direction: column; }
+  header { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+  header .group { display: flex; gap: 4px; align-items: center; }
+  button, input, select { font: inherit; color: var(--fg); background: #0d1310; border: 1px solid var(--line); border-radius: 5px; padding: 3px 8px; }
+  button { cursor: pointer; }
+  button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+  input#seed { width: 11em; }
+  label { color: var(--dim); }
+  canvas { flex: 1; width: 100%; min-height: 240px; display: block; }
+  footer { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: flex-start; padding: 6px 12px 10px; border-top: 1px solid var(--line); color: var(--dim); }
+  #readout { flex: 1 1 18em; }
+  table { border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  th, td { padding: 1px 8px; text-align: right; border-bottom: 1px solid var(--line); }
+  th:first-child, td:first-child { text-align: left; }
+</style>
+</head>
+<body>
+<header>
+  <div class="group" role="group" aria-label="Force mode">
+    <button data-mode="classic" aria-pressed="false" title="Hunar Ahmad's rule, bounced off the walls">classic</button>
+    <button data-mode="cell" aria-pressed="true" title="Near-field push and smooth pull, on a torus">cell</button>
+  </div>
+  <div class="group"><label for="seed">seed</label><input id="seed" spellcheck="false"><button id="dice" title="New word seed">↻</button></div>
+  <div class="group"><label for="kinds">kinds</label>
+    <select id="kinds"><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select></div>
+  <div class="group"><label for="n">particles</label>
+    <select id="n"><option>400</option><option>1000</option><option>2000</option></select></div>
+  <button id="bench">benchmark</button>
+</header>
+<canvas id="world" aria-label="Particle life simulation"></canvas>
+<footer>
+  <div id="readout">starting…</div>
+  <table id="results"></table>
+</footer>
+<script type="module">/*DEMO*/</script>
+</body>
+</html>

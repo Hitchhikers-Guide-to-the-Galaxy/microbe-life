@@ -1,0 +1,17 @@
+{
+  "name": "microbe-life",
+  "version": "0.1.0",
+  "description": "Particle life as small microbial creatures: one typed-array core for a web background and an Aether node.",
+  "type": "module",
+  "main": "src/core.js",
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "bench": "node bench/bench.js",
+    "build": "node build.js"
+  },
+  "author": "David Bovill",
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}
