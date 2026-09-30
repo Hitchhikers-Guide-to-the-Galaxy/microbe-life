@@ -1,7 +1,7 @@
 {
   "id": "com.aether.node.microbelife",
   "name": "Microbe Life",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "author": "David Bovill (particle life after Hunar Ahmad)",
   "description": "A small creature of particle life, and the sound it makes: each kind a voice, meetings between kinds ring grains, a colony that divides rings a bell. The sliders are musical and change the creature too.",
   "category": "Generator / Generative",
