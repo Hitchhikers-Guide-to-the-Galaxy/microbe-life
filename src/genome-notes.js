@@ -12,4 +12,5 @@ export const NOTES = {
   'volvox': { about: 'Layered spheres, each kind in its own shell.', found: 'scan' },
   'crescents': { about: 'Crescents and loose webs that form, split and re-form.', found: 'scan' },
   'colonies': { about: 'Many small layered colonies of six kinds.', found: 'scan' },
+  'banerjee-2018': { about: 'The soil network of Banerjee et al. 2018: four clusters, each gathering round keystone taxa.', found: 'data' },
 }

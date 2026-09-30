@@ -3,10 +3,14 @@
 // blend 'cell' (default): each particle is a faint halo plus an opaque
 //   disc, painted over one another, so a dense colony stays its own colours
 //   instead of burning to white, and layered kinds read as membranes.
-// blend 'glow': additive dots, the brighter look of the Phase 0 demo.
+// blend 'glow': additive dots, the brighter look of the Phase 0 demo
+//   (import './glow.js' to have it; the page background leaves it out).
 //
 // Sprites are pre-rendered per kind, so a frame is one fillRect plus one
 // or two drawImage calls per particle.
+
+// Extra sprite styles install themselves here (see glow.js).
+export const SPRITES = {}
 
 export const PALETTE = ['#7fd88f', '#e0b35a', '#5ec8d8', '#c77dd8', '#e87a6a', '#d8d06a', '#6a8ee8']
 
@@ -14,7 +18,7 @@ export class Painter {
   constructor(canvas, options = {}) {
     this.canvas = canvas
     this.ctx = canvas.getContext('2d')
-    this.palette = options.palette || PALETTE
+    this._palette = options.palette || null
     // null = a transparent canvas whose trails fade by erasing (for a page
     // background, over whatever the page already paints)
     this.background = options.background === undefined ? '#06080b' : options.background
@@ -24,6 +28,9 @@ export class Painter {
     this.maxDpr = options.maxDpr ?? 1.5
     this.resize()
   }
+
+  get palette() { return this._palette || PALETTE }
+  set palette(p) { this._palette = p || null }
 
   resize() {
     const dpr = Math.min(this.maxDpr, globalThis.devicePixelRatio || 1)
@@ -36,8 +43,9 @@ export class Painter {
     }
     this.dpr = dpr
     const r = this.size * dpr
-    this.dots = this.palette.map(c => this.blend === 'glow' ? glowSprite(c, r) : discSprite(c, r))
-    this.halos = this.blend === 'glow' ? null : this.palette.map(c => haloSprite(c, r * 3.2))
+    const glow = this.blend === 'glow' && SPRITES.glow
+    this.dots = this.palette.map(c => glow ? glow(c, r) : discSprite(c, r))
+    this.halos = glow ? null : this.palette.map(c => haloSprite(c, r * 3.2))
   }
 
   clear() {
@@ -85,23 +93,10 @@ export class Painter {
   }
 }
 
-function surface(size) {
+export function surface(size) {
   return typeof OffscreenCanvas === 'function'
     ? new OffscreenCanvas(size, size)
     : Object.assign(document.createElement('canvas'), { width: size, height: size })
-}
-
-function glowSprite(colour, radius) {
-  const size = Math.ceil(radius * 4), c = surface(size), g = c.getContext('2d')
-  const grad = g.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2)
-  grad.addColorStop(0, colour)
-  grad.addColorStop(0.25, colour)
-  grad.addColorStop(1, 'rgba(0,0,0,0)')
-  g.fillStyle = grad
-  g.globalAlpha = 0.9
-  g.fillRect(0, 0, size, size)
-  c.half = size / 2
-  return c
 }
 
 function discSprite(colour, radius) {

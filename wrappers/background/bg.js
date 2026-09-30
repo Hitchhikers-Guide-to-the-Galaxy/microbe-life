@@ -3,7 +3,7 @@
 //
 //   <script defer src="microbe-bg.min.js" data-genome="amoeba"></script>
 //
-// data-genome   a curated name or a g1… share code; data-seed seeds a random
+// data-genome   a curated name; data-seed seeds a random
 //               creature instead (a page slug, say)
 // data-count    particles, default 400 (halved while frames run over 8 ms)
 // data-opacity  default 0.35
@@ -21,8 +21,8 @@
 
 import { worldSize } from '../../src/core.js'
 import { Painter } from '../../src/draw2d.js'
-import { decode, lifeFromGenome } from '../../src/genome.js'
-import { GENOMES } from '../../src/genomes.js'
+import { lifeFromGenome } from '../../src/genome.js'
+import { GALLERY } from '../../src/genomes.js'
 import { hash32 } from '../../src/rng.js'
 
 const script = document.currentScript || document.querySelector('script[src*="microbe-bg"]')
@@ -47,12 +47,11 @@ let life = grow(opt('genome') || opt('seed') || 'amoeba')
 let from = null, fadeStart = 0, fadeLength = 0
 let last = 0, slow = 0, breath = 0, paused = false, held = false, frameMs = 0, frames = 0
 
-// A curated name, a share code, or anything else as a word seed (4 kinds).
+// A curated name, or anything else as a word seed (4 kinds).
 function genomeFor(key) {
   if (typeof key === 'object') return key
-  const named = GENOMES.find(g => g.name === key)
+  const named = GALLERY.find(g => g.name === key)
   if (named) return named
-  if (/^g1[A-Za-z0-9_-]+$/.test(key)) { try { return decode(key) } catch { /* fall through */ } }
   return { kinds: 4, seed: String(key) }
 }
 
@@ -64,6 +63,8 @@ function grow(key, settle = reduced ? 600 : 400) {
   const aspect = Math.min(3, Math.max(0.3, innerHeight / Math.max(1, innerWidth)))
   const l = lifeFromGenome(g, { count: Math.max(1, Math.round(count / g.kinds)), ...worldSize(count, aspect) })
   for (let i = 0; i < settle; i++) l.step()
+  l.genomeName = g.name || String(g.seed)
+  l.base = { rules: Float64Array.from(l.rules), radius: Float64Array.from(l.radius) }
   return l
 }
 
@@ -101,7 +102,7 @@ function stillFrame() {
 
 function show(key, seconds = 3) {
   const next = grow(key, 120)
-  next.genomeKey = key
+  next.genomeKey = typeof key === 'object' ? key.name : key
   if (reduced) { life = grow(key, 600); life.genomeKey = key; stillFrame(); return }
   from = life
   life = next
@@ -139,7 +140,7 @@ else requestAnimationFrame(frame)
 // page slug), crossfaded over the scene's FADE, and the master level breathes
 // the glow while sound plays.
 function creatureFor(page) {
-  return page.creature || GENOMES[hash32(page.slug) % GENOMES.length].name
+  return page.creature || GALLERY[hash32(page.slug) % GALLERY.length].name
 }
 function soundSite() {
   const site = window.soundSite
@@ -156,8 +157,27 @@ function soundSite() {
     else show(key, site.data.fade || 3)
     shown = key
   }
-  addEventListener('hashchange', follow)
   follow()
+
+  // A Microbe Life voice in the scene steers the creature. The code for it
+  // (and the musical mapping) is a separate file, microbe-steer.js, fetched
+  // the first time a scene holds such a voice, so pages without one never
+  // load it.
+  let steering = null, steerLoading = false
+  const hasVoice = () => (site.player?.tracks || []).some(t => (t.voices || []).some(v => v.key === 'microbe-life'))
+  const steer = () => {
+    if (steering) return steering.steer()
+    if (steerLoading || !hasVoice() || !script?.src) return
+    steerLoading = true
+    import(new URL('microbe-steer.js', script.src).href).then(m => {
+      steering = m.steerer(site, {
+        get life() { return life }, show, painter, follow: () => { shown = null; follow() },
+        get fade() { return site.data.fade || 3 },
+      })
+    }).catch(e => console.warn('[microbe-bg] steering unavailable:', e.message))
+  }
+  addEventListener('hashchange', () => { if (!steering?.active) follow() })
+
   // Breath follows the music against its own recent average (about five
   // seconds), so a steady scene glows at mid level and swells and ebbs with
   // its phrases, loud or quiet.
@@ -165,6 +185,7 @@ function soundSite() {
   setInterval(() => {
     const p = site.player
     const on = p?.ctx?.state === 'running' && !p.muted && !document.hidden
+    steer()
     if (!on) return window.microbeBackground.level(0)
     const rms = p.state().master
     average = average ? average * 0.98 + rms * 0.02 : rms

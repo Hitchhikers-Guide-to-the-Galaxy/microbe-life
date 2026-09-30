@@ -7,7 +7,7 @@
 
 const CELL_RADIUS = [40, 40, 40, 60, 40, 40, 40, 50, 40]
 
-export const GENOMES = [
+export const GALLERY = [
   { name: 'amoeba', kinds: 3, seed: 'cell', mix: [1, 3, 1], radius: CELL_RADIUS,
     rules: [0.6, -0.2, -0.4, 0.3, -0.6, 0.1, -0.4, 0.6, -0.2] },
   { name: 'budding', kinds: 3, seed: 'cell', mix: [1, 3, 1], radius: CELL_RADIUS,
@@ -23,3 +23,27 @@ export const GENOMES = [
   { name: 'crescents', kinds: 3, seed: 'gall_heath' },
   { name: 'colonies', kinds: 6, seed: 'plume_spring' },
 ]
+
+// Genomes drawn from data rather than chosen by eye. They follow the
+// gallery in GENOMES, so genome 12 is Banerjee 2018 everywhere.
+export const FROM_DATA = [
+  // From data, not from the eye: the soil co-occurrence network of Banerjee,
+  // Thrall, Bissett, van der Heijden & Richardson (2018), Ecology and
+  // Evolution 8(16):8217-8230, doi:10.1002/ece3.4346, CC BY 4.0. Five kinds
+  // are the paper's clusters (total P 164 OTUs, C:N 76, pH 42, potential
+  // nitrification 49) and its ten keystone taxa; counts follow their sizes.
+  // The forces are ours, as the paper gives no signs between clusters: each
+  // cluster holds together, clusters are neutral to one another, and all are
+  // drawn to the keystones. Co-occurrence is association, not interaction.
+  // Contributed by the night.earth Night Sound session, 2026-09-30.
+  { name: 'banerjee-2018', kinds: 5, seed: 'ecotone', data: true,
+    mix: [164, 76, 42, 49, 10],
+    rules: [0.5, 0, 0, 0, 0.8,
+            0, 0.5, 0, 0, 0.8,
+            0, 0, 0.5, 0, 0.8,
+            0, 0, 0, 0.6, 0.8,
+            0.4, 0.4, 0.4, 0.4, 0.4],
+    kindsNamed: ['total phosphorus', 'C:N ratio', 'pH', 'potential nitrification', 'keystone taxa'] },
+]
+
+export const GENOMES = /* @__PURE__ */ GALLERY.concat(FROM_DATA)

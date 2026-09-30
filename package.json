@@ -1,6 +1,6 @@
 {
   "name": "microbe-life",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Particle life as small microbial creatures: one typed-array core for a web background and an Aether node.",
   "type": "module",
   "main": "src/core.js",

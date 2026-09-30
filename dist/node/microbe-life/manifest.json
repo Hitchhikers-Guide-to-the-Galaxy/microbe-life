@@ -1,0 +1,101 @@
+{
+  "id": "com.aether.node.microbelife",
+  "name": "Microbe Life",
+  "version": "0.4.0",
+  "author": "David Bovill (particle life after Hunar Ahmad)",
+  "description": "A small creature of particle life, and the sound it makes: each kind a voice, meetings between kinds ring grains, a colony that divides rings a bell. The sliders are musical and change the creature too.",
+  "category": "Generator / Generative",
+  "inputs": 0,
+  "outputs": 2,
+  "entry": {
+    "dsp": "dsp.js",
+    "ui": "ui.html"
+  },
+  "canvas_animation": {
+    "type": "particle-life",
+    "settings": {
+      "genome": "amoeba"
+    }
+  },
+  "parameters": [
+    {
+      "id": "genome",
+      "name": "Genome",
+      "type": "int",
+      "min": 0,
+      "max": 99,
+      "default": 0,
+      "step": 1
+    },
+    {
+      "id": "voices",
+      "name": "Voices",
+      "type": "int",
+      "min": 2,
+      "max": 6,
+      "default": 4,
+      "step": 1
+    },
+    {
+      "id": "harmony",
+      "name": "Harmony",
+      "type": "float",
+      "min": 0,
+      "max": 1,
+      "default": 0.5,
+      "unit": "norm"
+    },
+    {
+      "id": "tempo",
+      "name": "Tempo",
+      "type": "float",
+      "min": 0.1,
+      "max": 3,
+      "default": 1
+    },
+    {
+      "id": "sustain",
+      "name": "Sustain",
+      "type": "float",
+      "min": 0,
+      "max": 1,
+      "default": 0.5,
+      "unit": "norm"
+    },
+    {
+      "id": "reach",
+      "name": "Reach",
+      "type": "float",
+      "min": 0.5,
+      "max": 2,
+      "default": 1
+    },
+    {
+      "id": "mutation",
+      "name": "Mutation",
+      "type": "float",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "unit": "norm"
+    },
+    {
+      "id": "root",
+      "name": "Root",
+      "type": "float",
+      "min": 40,
+      "max": 400,
+      "default": 110,
+      "unit": "Hz"
+    },
+    {
+      "id": "gain",
+      "name": "Gain",
+      "type": "float",
+      "min": 0,
+      "max": 1,
+      "default": 0.6,
+      "unit": "norm"
+    }
+  ]
+}

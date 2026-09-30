@@ -7,6 +7,7 @@ import { Life, worldSize } from '../src/core.js'
 import '../src/colonies.js'
 import '../src/classic.js'
 import { Painter } from '../src/draw2d.js'
+import '../src/glow.js'
 import { encode, decode, lifeFromGenome, genomeOf, wordSeed } from '../src/genome.js'
 import { GENOMES } from '../src/genomes.js'
 

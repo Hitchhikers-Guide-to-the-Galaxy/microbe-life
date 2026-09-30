@@ -48,6 +48,15 @@ motion. `data-count`, `data-opacity`, `data-fps` and `data-scale` tune it;
 On the night.earth Sound Site it gives each page its own creature, crossfades
 with the scene and breathes with the music.
 
+The Aether node (`dist/microbe-life.aethernode`, 13 KB) is a manifest, an
+AudioWorklet (`wrappers/node/dsp.js`) and a panel (`wrappers/node/ui.js`).
+The worklet runs its own small copy of the creature: each kind is a voice,
+new contacts between kinds ring grains, a dividing colony rings a bell. The
+nine sliders (`src/map.js`) are musical and change the creature too; the
+panel draws a larger copy that follows them. On the Sound Site a
+Microbe Life voice steers the page background (`dist/microbe-steer.js`,
+loaded on demand).
+
 Classic mode (`src/classic.js`) and colonies/stats (`src/colonies.js`) add
 themselves to Life when imported, so the background carries neither.
 
@@ -61,6 +70,7 @@ npm run build     # dist/microbe-life-demo.html, one file
 npm run scan 400  # score random seeds for membranes, chains, division (JSON)
 npm run thumbs    # looping MP4 + JPG poster per curated genome (ffmpeg)
 npm run cyjs      # cytoscape graph data per curated genome
+node bench/render.js out.wav 20 't=0 genome=3' 't=10 harmony=1'   # render the node offline
 ```
 
 MIT. See LICENSE for credits to Hunar Ahmad and Chevy Ray Johnston.
