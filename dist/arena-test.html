@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Microbe Arena test</title>
+<style>html,body{margin:0;background:#101217;color:#aab;font:12px system-ui}canvas{display:block;width:100vw;height:100vh}</style></head>
+<body><canvas></canvas>
+<script src="microbe-arena.js"></script>
+<script>
+// A stand-in for Aether Desktop's arena: depth rings, and three tracks whose
+// nodes carry canvas_animation 'particle-life'. Levels are a slow swell.
+const canvas = document.querySelector('canvas'), ctx = canvas.getContext('2d')
+const tracks = [
+  { x: 0.30, y: 0.40, color: '#e0b35a', c: MicrobeArena.create({ genome: 'amoeba' }) },
+  { x: 0.68, y: 0.35, color: '#5ec8d8', c: MicrobeArena.create({ genome: 'hyphae' }) },
+  { x: 0.52, y: 0.72, color: '#c77dd8', c: MicrobeArena.create({ genome: 'volvox' }) },
+]
+tracks[2].c.update({ root: 196 })
+function frame(t) {
+  const w = canvas.width = innerWidth * devicePixelRatio, h = canvas.height = innerHeight * devicePixelRatio
+  ctx.clearRect(0, 0, w, h)
+  const cx = w / 2, cy = h / 2, R = Math.min(w, h) * 0.46
+  ctx.setLineDash([3, 5]); ctx.strokeStyle = 'rgba(255,255,255,0.08)'
+  for (const f of [0.28, 0.56, 0.85]) { ctx.beginPath(); ctx.arc(cx, cy, R * f, 0, Math.PI * 2); ctx.stroke() }
+  ctx.setLineDash([])
+  tracks.forEach((tr, i) => {
+    const px = tr.x * w, py = tr.y * h, node = 14 * devicePixelRatio
+    const level = 0.5 + 0.5 * Math.sin(t / 900 + i * 2)
+    tr.c.draw(ctx, px, py, node * 5, { level, alpha: 0.9 })
+    ctx.beginPath(); ctx.arc(px, py, node, 0, Math.PI * 2); ctx.fillStyle = tr.color; ctx.fill()
+    ctx.beginPath(); ctx.arc(px, py, node + 6, 0, Math.PI * 2); ctx.strokeStyle = 'rgba(255,255,255,0.15)'; ctx.lineWidth = 3.5; ctx.stroke()
+  })
+  requestAnimationFrame(frame)
+}
+requestAnimationFrame(frame)
+</script></body></html>

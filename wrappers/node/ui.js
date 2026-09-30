@@ -16,6 +16,7 @@ const canvas = $('canvas')
 const painter = new Painter(canvas, { background: '#0a0a0a', trail: 0.25, size: 2.2 })
 const COUNT = 420
 let life, base, frameCount = 0
+let level = 0, levelTarget = 0, heard = false
 
 function build() {
   const g = genomeFor(params)
@@ -74,6 +75,7 @@ window.addEventListener('message', e => {
   if (!m || typeof m !== 'object') return
   if (m.type === 'aether:param-update') set(m.paramId, m.value, 'host')
   else if (m.type === 'PARAMETER_UPDATE') set(m.id ?? m.paramId, m.value, 'host')
+  else if (m.type === 'aether:level' && typeof m.peak === 'number') { heard = true; levelTarget = Math.max(0, Math.min(1, m.peak)) }
 })
 
 let running = true
@@ -83,6 +85,10 @@ function frame() {
   life.step()
   painter.draw(life)
   canvas.style.opacity = String(0.55 + 0.45 * params.gain)
+  if (heard) {
+    level += (levelTarget - level) * 0.25
+    canvas.style.filter = `brightness(${(0.7 + 1.1 * Math.sqrt(level)).toFixed(3)})`
+  }
   if (++frameCount % 6 === 0 && params.mutation > 0) { mutate(base, params.mutation); applyParams(life, params, base) }
 }
 document.addEventListener('visibilitychange', () => {
@@ -92,4 +98,4 @@ document.addEventListener('visibilitychange', () => {
 new ResizeObserver(() => painter.resize()).observe(canvas)
 
 requestAnimationFrame(() => { build(); requestAnimationFrame(frame) })
-window.microbePanel = { params, get life() { return life }, set }
+window.microbePanel = { params, get life() { return life }, set, get level() { return level } }

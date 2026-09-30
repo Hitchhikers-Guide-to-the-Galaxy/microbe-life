@@ -52,3 +52,9 @@ await rm('dist/microbe-life.aethernode', { force: true })
 execFileSync('zip', ['-X', '-j', '-q', 'dist/microbe-life.aethernode', `${nodeDir}/manifest.json`, `${nodeDir}/dsp.js`, `${nodeDir}/ui.html`])
 const zipSize = (await readFile('dist/microbe-life.aethernode')).length
 console.log(`dist/microbe-life.aethernode ${(zipSize / 1024).toFixed(1)} KB (dsp ${(dsp.outputFiles[0].text.length / 1024).toFixed(1)} KB, ui ${(uiHtml.length / 1024).toFixed(1)} KB)`)
+
+// Aether Desktop's arena: a global MicrobeArena for canvas_animation 'particle-life'.
+await build({ entryPoints: ['wrappers/arena/arena.js'], bundle: true, minify: true, format: 'iife', outfile: 'dist/microbe-arena.js', legalComments: 'none', target: 'es2020',
+  banner: { js: '/* Microbe Life arena animation for Aether Desktop · MIT · David Bovill; particle life after Hunar Ahmad (MIT) */' } })
+await writeFile('dist/arena-test.html', await readFile('wrappers/arena/test.html'))
+console.log(`dist/microbe-arena.js ${((await readFile('dist/microbe-arena.js')).length / 1024).toFixed(1)} KB`)
