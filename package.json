@@ -10,7 +10,8 @@
     "build": "node build.js",
     "scan": "node bench/scan.js",
     "thumbs": "node bench/thumbs.js dist/thumbs",
-    "cyjs": "node bench/cyjs.js dist/cyjs"
+    "cyjs": "node bench/cyjs.js dist/cyjs",
+    "prepublishOnly": "node build.js && node --test test/*.test.js"
   },
   "author": "David Bovill",
   "license": "MIT",
@@ -31,5 +32,33 @@
     "aether",
     "audioworklet",
     "microbes"
-  ]
+  ],
+  "files": [
+    "src",
+    "wrappers",
+    "bench",
+    "test",
+    "build.js",
+    "dist/microbe-bg.min.js",
+    "dist/microbe-steer.js",
+    "dist/microbe-arena.js",
+    "dist/microbe-life.aethernode",
+    "dist/node",
+    "dist/microbe-life-demo.html",
+    "dist/bg-test.html",
+    "dist/arena-test.html"
+  ],
+  "exports": {
+    ".": "./src/core.js",
+    "./colonies": "./src/colonies.js",
+    "./classic": "./src/classic.js",
+    "./genome": "./src/genome.js",
+    "./genomes": "./src/genomes.js",
+    "./map": "./src/map.js",
+    "./draw2d": "./src/draw2d.js",
+    "./glow": "./src/glow.js",
+    "./cyjs": "./src/cyjs.js",
+    "./rng": "./src/rng.js",
+    "./package.json": "./package.json"
+  }
 }
